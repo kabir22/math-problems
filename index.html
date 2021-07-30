@@ -1,0 +1,121 @@
+<html>
+<head>
+<title>Math home work</title>
+<script src="http://code.jquery.com/jquery-3.6.0.min.js" ></script>
+<style>
+	.mathcal{
+		border-collapse: collapse;
+	}
+		.mathcal td{
+			text-align: right;
+		}
+		.firstRow td{
+			padding-top: 20px;
+		}
+		.secondRows{
+			border-bottom: 1px solid #000;
+		}
+		.ans{
+			padding-bottom: 10px;
+		}
+
+</style>
+</head>
+<body>
+	<table>
+   <tr>
+      <td width="300px">
+         <table id="addCal" class="mathcal">
+         </table>
+      </td>
+      <td>
+         <table id="subCal" class="mathcal">
+         </table>
+      </td>
+   </tr>
+
+   <tr>
+      <td width="300px">
+         <table id="multiCal" class="mathcal" style="margin-top: 20px;">
+         </table>
+      </td>
+      <td>
+         <table id="divCal" class="mathcal" style="margin-top: 20px;">
+         </table>
+      </td>
+   </tr>
+</table>
+<button type="button" onclick="calculateAns()">Reveal Answers</button>
+<script>
+	$(document).ready(function(){
+
+		$('#addCal').append('<tr><td colspan=2><h2>Addition</h2></td></tr>');
+		for(i=0;i<5;i++){
+			firstNumber = Math.floor(Math.random()*10000 +1000);
+			secondNumber = Math.floor(Math.random()*10000 +1000);
+			$('#addCal').append('<tr class="firstRow"><td colspan="2" class="fn" >'+firstNumber+'</td></tr><tr class="secondRows"><td>+</td><td class="sn">'+secondNumber+'</td></tr><tr><td class="ans" colspan=2></td></tr>');
+		}
+
+		$('#subCal').append('<tr><td colspan=2><h2>Subtraction</h2></td></tr>');
+		for(i=0;i<5;i++){
+			firstNumber = Math.floor(Math.random()*10000 +1000);
+			secondNumber = Math.floor(Math.random()*firstNumber +100);
+			$('#subCal').append('<tr class="firstRow"><td colspan="2" class="fn" >'+firstNumber+'</td></tr><tr class="secondRows"><td>-</td><td class="sn">'+secondNumber+'</td></tr><tr><td class="ans" colspan=2></td></tr>');
+		}
+
+		$('#multiCal').append('<tr><td colspan=2><h2>Multipy</h2></td></tr>');
+		for(i=0;i<5;i++){
+			firstNumber = Math.floor(Math.random()*100 +10);
+			secondNumber = Math.floor(Math.random(2)*9+2);
+			$('#multiCal').append('<tr class="firstRow"><td colspan="2" class="fn" >'+firstNumber+'</td></tr><tr class="secondRows"><td>x</td><td class="sn">'+secondNumber+'</td></tr><tr><td class="ans" colspan=2></td></tr>');
+		}
+
+		$('#divCal').append('<tr><td colspan=2><h2>Division</h2></td></tr>');
+		for(i=0;i<5;i++){
+			//firstNumber = Math.floor(Math.random()*90 +10);
+			secondNumber = Math.floor(Math.random(2)*8+2);
+			firstNumber = Math.floor(Math.random(2)*(secondNumber+1)*secondNumber+10);
+			$('#divCal').append('<tr class="firstRow"><td colspan="2" class="fn"  >'+firstNumber+'</td></tr><tr class="secondRows"><td>&div;</td><td class="sn">'+secondNumber+'</td></tr><tr><td class="ans" colspan=2></td></tr>');
+		}
+	});
+
+
+	function calculateAns(){
+		firstNumber =0, secondNumber =0
+		internalCal("addCal", "+");
+		internalCal("subCal", "-")
+		internalCal("multiCal", "*")
+		internalCal("divCal", "/")
+	}
+
+	function internalCal(tableName, operator){
+		firstNumber =0, secondNumber =0
+		$("#"+ tableName).find("tr:gt(0)").each(function(){
+			if($(this).find(".fn").length > 0) {
+					firstNumber = Number($(this).find(".fn").text());
+			}
+			else if($(this).find(".sn").length > 0) {
+				secondNumber = Number($(this).find(".sn").text());
+			}
+			else {
+				switch(operator){
+					case "+": $(this).find(".ans").html(firstNumber+secondNumber);
+					break;
+					case "-": $(this).find(".ans").html(firstNumber-secondNumber);
+					break;
+					case "*": $(this).find(".ans").html(firstNumber*secondNumber);
+					break;
+					case "/": $(this).find(".ans").html(
+						"Q: "+ Math.floor(firstNumber/secondNumber) +
+						"R: " + firstNumber%secondNumber
+						);
+					break;
+				}
+				
+				firstNumber = secondNumber =0
+			}
+		});
+	}
+</script>
+</body>
+</html>
